@@ -3,4 +3,5 @@
 /data/cache
 /data/__pycache__
 /tests/__pycache__
+/agents/__pycache__
 .pytest_cache

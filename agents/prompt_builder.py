@@ -1,12 +1,3 @@
-# construct baseline, repeat
-
-"""
-Ex with ARC
-    - extract question (context)
-    - extract choices
-    - double **either**
-"""
-
 from enum import Enum
 from dataclasses import dataclass
 
@@ -192,7 +183,7 @@ if __name__ == "__main__":
     print("\n=== PADDING ===")
     print(builder.build(test_query, PromptVariant.PADDING))
 
-    # show lengths (I need to calc budget with this lol)
+    # show lengths (I should calc budget with this)
     print("\n=== TOKEN COUNTS (approx) ===")
     all_variants = builder.build_all_variants(test_query)
     for name, prompt in all_variants.items():
