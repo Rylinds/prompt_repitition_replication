@@ -43,3 +43,5 @@ def test_prompt_formatting():
     assert "Question: What is 2+2?" in of
     assert of.find("A) 3") < of.find("Question: What is 2+2?") # option should come first
     assert of.strip().endswith("What is 2+2?")
+
+# python -m pytest tests/test_loaders.py -vs
