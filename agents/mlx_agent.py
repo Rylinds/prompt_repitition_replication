@@ -97,7 +97,7 @@ class MLXAgent:
         prompt_token_ids = self._tokenizer.encode(formatted_prompt)
         prompt_tokens = len(prompt_token_ids)
 
-        # recent mlx-lm removed the temp kwarg from generate() in favour of an explicit sampler callable.
+        # recent mlx-lm removed the temp kwarg from generate() in favor of an explicit sampler callable.
         # make_sampler(temp, top_p, min_p, min_tokens_to_keep)
         # FAAAAAAAAAHHHHHH
         sampler = make_sampler(self.config.temperature)
@@ -137,7 +137,7 @@ class MLXAgent:
         Release the model and tokenizer from unified memory.
 
         Call this before initialising an API-based agent or before the process
-        exits to avoid holding 4–5 GB of weights unnecessarily.
+        exits to avoid holding 4-5GB of weights.
         """
         self._model = None
         self._tokenizer = None

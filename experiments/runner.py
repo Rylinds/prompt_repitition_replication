@@ -1,4 +1,6 @@
-from data.loaders.arc_loader import ARCLoader, format_mcq_prompt
+from data.arc_loader import ARCLoader, format_mcq_prompt
+
+"""Rough Idea"""
 
 # experiment init
 loader = ARCLoader(split="test")
