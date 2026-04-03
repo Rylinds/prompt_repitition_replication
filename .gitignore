@@ -4,4 +4,6 @@
 /data/__pycache__
 /tests/__pycache__
 /agents/__pycache__
+/experiments/__pycache__
+/analysis/data/cache
 .pytest_cache
