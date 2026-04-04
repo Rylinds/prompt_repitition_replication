@@ -44,4 +44,54 @@ def test_prompt_formatting():
     assert of.find("A) 3") < of.find("Question: What is 2+2?") # option should come first
     assert of.strip().endswith("What is 2+2?")
 
+def test_numeric_answer_key_normalisation():
+    """
+    NYSEDREGENTS questions use numeric keys 1/2/3/4 instead of A/B/C/D.
+    The loader must map them to letters so the evaluator never sees a digit
+    as a gold answer.
+    """
+    from data.arc_loader import ARCLoader
+ 
+    # simulate exactly what the raw HuggingFace dataset returns for a
+    # NYSEDREGENTS question: numeric labels and a numeric answerKey
+    raw = {
+        "id": "NYSEDREGENTS_mock",
+        "question": "What is the primary source of energy for Earth's surface processes?",
+        "choices": {
+            "text":  ["The Sun", "The Moon", "Earth's core", "Ocean currents"],
+            "label": ["1", "2", "3", "4"],
+        },
+        "answerKey": "1",
+    }
+ 
+    loader = ARCLoader.__new__(ARCLoader)
+    example = loader._parse_example(raw)
+ 
+    # option_labels must all be letters
+    assert example.option_labels == ["A", "B", "C", "D"], (
+        f"option_labels not normalised: {example.option_labels}"
+    )
+    # correct_label must be a letter
+    assert example.correct_label == "A", (
+        f"correct_label not normalised: {example.correct_label!r}"
+    )
+    # correct_label must still be in option_labels (internal consistency)
+    assert example.correct_label in example.option_labels
+    # correct_text must still resolve correctly
+    assert example.correct_text == "The Sun"
+ 
+    # check each digit -> letter mapping
+    for digit, letter in [("1","A"), ("2","B"), ("3","C"), ("4","D")]:
+        raw_variant = {**raw, "choices": {**raw["choices"], "label": ["1","2","3","4"]},
+                       "answerKey": digit}
+        ex = loader._parse_example(raw_variant)
+        assert ex.correct_label == letter, f"Expected {digit} → {letter}, got {ex.correct_label}"
+ 
+    # letter keys must pass through unchanged (regression guard)
+    raw_letter = {**raw, "choices": {**raw["choices"], "label": ["A","B","C","D"]},
+                  "answerKey": "C"}
+    ex_letter = loader._parse_example(raw_letter)
+    assert ex_letter.correct_label == "C"
+    assert ex_letter.option_labels == ["A", "B", "C", "D"]
+
 # python -m pytest tests/test_loaders.py -vs

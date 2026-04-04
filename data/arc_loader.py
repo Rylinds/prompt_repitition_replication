@@ -75,15 +75,28 @@ class ARCLoader:
             examples.append(example)
         return examples
     
+    # a small subset of ARC questions (NYSEDREGENTS) store their
+    # answer keys as digits 1/2/3/4 -> option_labels and answerKey can be
+    # affected, so normalise both so the rest of the pipeline always
+    # see the letter keys A/B/C/D
+    _KEY_MAP = {"1": "A", "2": "B", "3": "C", "4": "D"}
+
+    @classmethod
+    def _normalize_key(cls, key: str) -> str:
+        """Map numeric answers to letters; pass letters through unchanged"""
+        return cls._KEY_MAP.get(key, key)
+    
     def _parse_example(self, raw_example: dict) -> MCQExample:
         """Convert raw HuggingFace example to MCQExample"""
+        raw_labels = raw_example["choices"]["label"]
+        
         return MCQExample(
             benchmark="ARC",
             example_id=raw_example["id"],
             question=raw_example["question"],
             options=raw_example["choices"]["text"],
-            option_labels=raw_example["choices"]["label"],
-            correct_label=raw_example["answerKey"]
+            option_labels=[self._normalize_key(l) for l in raw_labels],
+            correct_label=self._normalize_key(raw_example["answerKey"]),
         )
     
     def __len__(self) -> int:
