@@ -132,7 +132,7 @@ Parses model responses using a three-tier cascade for MCQ:
 2. **Delimited fallback** — catches formats like `"(B)"`, `"B)"`, `"B."` with regex named groups
 3. **Keyword/isolated fallback** — finds a standalone letter, excluding `"I"` (to avoid false positives on first-person responses while preserving `"I)"` for MMLU-Pro style formats)
 
-A separate numeric path handles GSM8K's free-form math answers. The evaluator also tracks McNemar-compatible pairing contracts — each question gets a `(baseline_correct, repeat_correct)` pair, not just individual accuracy.
+A separate numeric path handles GSM8K's free-form math answers. The evaluator also tracks McNemar-compatible pairing contracts. Each question gets a `(baseline_correct, repeat_correct)` pair, not just individual accuracy.
 
 ### Runner (`experiments/runner.py`)
 
