@@ -28,7 +28,7 @@ The central claim of Leviathan et al. (2025) is pretty simple. If you send a mod
 <QUERY><QUERY>
 ```
 
-, its accuracy on standard multiple-choice benchmarks improves, *without* increasing output length or inference latency.
+its accuracy on standard multiple-choice benchmarks improves, *without* increasing output length or inference latency.
 
 Across 7 models and 7 benchmarks, the repeated-prompt condition outperformed the baseline in 47 out of 70 tested configurations (67%), with statistically significant wins on most benchmarks by McNemar's test. The effect is notably absent in reasoning models (o1, Gemini Thinking), which the authors interpret as evidence that the technique works by giving non-reasoning models a second pass over the question during the parallelizable *prefill* stage (a form of implicit "re-reading" that reasoning models achieve through their chain-of-thought outputs anyway).
 
