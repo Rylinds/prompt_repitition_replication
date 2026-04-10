@@ -1,3 +1,7 @@
+"""
+Unit tests for ARC-Challenge data loader
+"""
+
 import pytest
 from data.arc_loader import ARCLoader, MCQExample, format_mcq_prompt
 
